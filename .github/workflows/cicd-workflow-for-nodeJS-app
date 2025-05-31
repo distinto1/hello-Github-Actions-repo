@@ -1,4 +1,4 @@
-name: Node.js CI/CD
+name: Workflow for Node.js app
 on: 
   workflow_dispatch:
 

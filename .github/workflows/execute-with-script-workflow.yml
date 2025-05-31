@@ -1,4 +1,4 @@
-name:  Generate ASCII Artwork
+name:  execute-with-script-workflow
 
 on:  
   workflow_dispatch: # Manual trigger

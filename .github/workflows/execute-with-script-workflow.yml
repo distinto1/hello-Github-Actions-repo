@@ -1,0 +1,17 @@
+name:  Generate ASCII Artwork
+
+on:  
+  workflow_dispatch: # Manual trigger
+
+jobs:
+    ascii_job:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout Repo
+            uses: actions/checkout@v4
+          - name: list Repo files
+            run: ls -ltra
+          - name: Execute shell script
+            run: |
+              chmod +x ascii-script.sh
+              ./ascii-script.sh

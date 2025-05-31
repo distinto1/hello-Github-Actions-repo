@@ -13,5 +13,5 @@ jobs:
             run: ls -ltra
           - name: Execute shell script
             run: |
-              chmod +x /ascii-script.sh
-              ./ascii-script.sh
+              chmod +x "$GITHUB_WORKSPACE/ascii-script.sh"
+              "$GITHUB_WORKSPACE/ascii-script.sh"

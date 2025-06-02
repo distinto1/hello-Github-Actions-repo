@@ -4,7 +4,8 @@
   "description": "A simple Node.js project for GitHub Actions testing",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"No tests specified yet\""
+    "test": "jest",
+    "build": "mkdir -p dist && cp index.js dist/bundle.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/distinto1/hello-world-repo/issues"
   },
-  "homepage": "https://github.com/distinto1/hello-world-repo#readme"
+  "homepage": "https://github.com/distinto1/hello-world-repo#readme",
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1"
+  }
 }

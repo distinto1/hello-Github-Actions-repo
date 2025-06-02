@@ -1,0 +1,24 @@
+{
+  "name": "hello-github-actions-repo",
+  "version": "1.0.0",
+  "description": "A simple Node.js project for GitHub Actions testing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests specified yet\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/distinto1/hello-world-repo.git"
+  },
+  "keywords": [
+    "github-actions",
+    "nodejs",
+    "ci-cd"
+  ],
+  "author": "Daniel Ugot",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/distinto1/hello-world-repo/issues"
+  },
+  "homepage": "https://github.com/distinto1/hello-world-repo#readme"
+}

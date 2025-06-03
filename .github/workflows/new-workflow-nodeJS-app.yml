@@ -63,8 +63,13 @@ jobs:
       with:
         name: build-output
         path: main-repo/dist  # Overwrites local dist/ with the built artifact
-
-    - run: npm test  # Requires "test" script in package.json
+    
+    - name: verify download-artifacts
+      run: ls - R main-repo/dist  # List files in the dist directory to verify download  
+      
+      
+    - name: Run tests
+      run: npm test  # Requires "test" script in package.json
       working-directory: main-repo
 
   deploy:

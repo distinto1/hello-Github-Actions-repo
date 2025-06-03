@@ -1,78 +1,81 @@
-name: new-workflow for Node.js CI/CD
+name: New-Workflow-Node.js CI/CD
 
 on: 
   workflow_dispatch:  # Manually triggered
 
-
 jobs:
+  install:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-key: ${{ steps.hash.outputs.hash }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Generate dependency hash
+      id: hash
+      run: echo "hash=$(shasum package-lock.json | cut -d ' ' -f1)" >> $GITHUB_OUTPUT
+
   build:
+    needs: install
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    
     - uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
+        cache-dependency-path: package-lock.json
 
     - name: Install dependencies
       run: npm ci
 
     - name: Build project
-      run: npm run build
+      run: npm run build  # Requires "build" script in package.json
 
     - uses: actions/upload-artifact@v4
       with:
         name: build-output
-        path: dist/
+        path: dist/  # Ensure this matches your build output directory
 
   test:
     needs: build
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-      fail-fast: false  # Correctly placed
+      fail-fast: false 
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      packages: read
+    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - uses: actions/checkout@v4
+      with:
+        path: main-repo
+    - uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
     
     - name: Install dependencies
       run: npm ci
+      working-directory: main-repo  
 
-    - name: Download build artifact
-      uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v4
       with:
         name: build-output
-        path: dist/
+        path: main-repo/dist  # Overwrites local dist/ with the built artifact
 
-    - name: Run tests
-      run: npm test
+    - run: npm test  # Requires "test" script in package.json
+      working-directory: main-repo
 
   deploy:
     needs: test
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'  # Runs only on main branch
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Download build artifact
-      uses: actions/download-artifact@v4
+    - uses: actions/download-artifact@v4
       with:
         name: build-output
         path: dist/
 
     - name: Deploy to production
-      run: |
-        echo "Deploying to production..."
-        # Add your actual deployment commands here
-        # For example:
-        # rsync -av dist/ user@server:/path/to/deployment/
-        # or use a deployment action like actions/deploy-pages@v3
+      run: chmod +x ./deploy-script.sh && ./deploy-script.sh

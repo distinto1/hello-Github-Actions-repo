@@ -65,7 +65,7 @@ jobs:
         path: main-repo/dist  # Overwrites local dist/ with the built artifact
     
     - name: verify download-artifacts
-      run: ls - R main-repo/dist  # List files in the dist directory to verify download  
+      run: ls -R main-repo/dist  # List files in the dist directory to verify download  
       
       
     - name: Run tests
